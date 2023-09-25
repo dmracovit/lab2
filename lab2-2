@@ -1,0 +1,157 @@
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+
+// Function to print an array
+void printArray(int arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+// Bubble Sort algorithm
+void bubbleSort(int arr[], int n) {
+    clock_t start_time = clock();
+    
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap arr[j] and arr[j+1]
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+
+    clock_t end_time = clock();
+    double elapsed_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("\n Bubble Sort took %.6f seconds\n", elapsed_time);
+}
+
+// Selection Sort algorithm
+void selectionSort(int arr[], int n) {
+    clock_t start_time = clock();
+    
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        // Swap arr[i] and arr[minIndex]
+        int temp = arr[i];
+        arr[i] = arr[minIndex];
+        arr[minIndex] = temp;
+    }
+
+    clock_t end_time = clock();
+    double elapsed_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("\n Selection Sort took %.6f seconds\n", elapsed_time);
+}
+
+// Insertion Sort algorithm
+void insertionSort(int arr[], int n) {
+    clock_t start_time = clock();
+    
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+
+    clock_t end_time = clock();
+    double elapsed_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("\n Insertion Sort took %.6f seconds\n", elapsed_time);
+}
+
+// Quick Sort algorithm
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            // Swap arr[i] and arr[j]
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+    // Swap arr[i+1] and arr[high] (pivot)
+    int temp = arr[i + 1];
+    arr[i + 1] = arr[high];
+    arr[high] = temp;
+    return (i + 1);
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int n = 100; // Number of elements in the array
+    int arr[n], gen_arr[n];
+
+    // Generate a random array of 50 elements between 1 and 1000
+    srand(time(NULL));
+    for (int i = 0; i < n; i++) {
+        arr[i] = rand() % 1000 + 1;
+        gen_arr[i] = arr[i]; // Store the original array elements in gen_arr
+    }
+
+    printf("Initial Array: \n");
+    printArray(arr, n);
+    
+    // Bubble Sort
+    bubbleSort(arr, n);
+    printf("Bubble Sort: ");
+    printArray(arr, n);
+  
+    // Reset arr to the original unsorted state
+    for (int i = 0; i < n; i++) {
+        arr[i] = gen_arr[i];
+    }
+
+    // Selection Sort
+    selectionSort(arr, n);
+    printf("Selection Sort: ");
+    printArray(arr, n);
+
+    // Reset arr to the original unsorted state
+    for (int i = 0; i < n; i++) {
+        arr[i] = gen_arr[i];
+    }
+
+    // Insertion Sort
+    insertionSort(arr, n);
+    printf("Insertion Sort: ");
+    printArray(arr, n);
+
+    // Reset arr to the original unsorted state
+    for (int i = 0; i < n; i++) {
+        arr[i] = gen_arr[i];
+    }
+
+    clock_t start_time = clock();
+    // Quick Sort
+    quickSort(arr, 0, n - 1);
+    clock_t end_time = clock();
+    double elapsed_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("\n Quick Sort took %.6f seconds\n", elapsed_time);
+    printf("Quick Sort: ");
+    printArray(arr, n);
+
+    return 0;
+}
