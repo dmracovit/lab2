@@ -3,5 +3,4 @@ Sorting algorythms
 
 ```
 ./main
-input: bgbmiubibmi
 ```
